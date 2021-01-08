@@ -1,2 +1,2 @@
 # cashjs-stripe
-Cashjs provides implementations of Stripe custommer services for Nodejs
+Cashjs provides implementations of Stripe customer services for Nodejs
