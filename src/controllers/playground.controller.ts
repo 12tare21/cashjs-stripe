@@ -1,82 +1,82 @@
 import { Controller, Get } from '@nestjs/common';
 import { Cashable } from 'src/decorators/cashable';
-import  Stripe  from 'stripe';
+import Stripe from 'stripe';
 import { readFileSync } from 'fs';
 
-class CashableEntity{
+class CashableEntity {
     // ...
-    
+
     @Cashable(
-        new Stripe(getEnvObject()['STRIPE_SECRET_KEY'], {apiVersion: '2020-08-27'}),
+        new Stripe(getEnvObject()['STRIPE_SECRET_KEY'], { apiVersion: '2020-08-27' }),
         {
             currency: getEnvObject()['CASHJS_CURRENCY'] // set default currency used for cashjs methods
-        }  
-    ) 
+        }
+    )
     public stripe: any; // Decorated property with common stripe API-s and CashJS custom methods
     public stripe_id: string = null; // Customer id property
-    
+
     // ...
 }
 
 @Controller()
 export class PlaygroundController {
-  @Get('/test')
-  async test(): Promise<any> {
-    const useCaseRes: any = {};
+    @Get('/test')
+    async test(): Promise<any> {
+        const useCase: any = {};
 
-    // Create stripe customer on cashable entity instance
-    const user: CashableEntity = new CashableEntity();  
-    await user.stripe.createStripeCustomer();
-    let customer = await user.stripe.asStripeCustomer();
-    useCaseRes['created_stripe_customer'] = customer;
+        // Create stripe customer on cashable entity instance
+        const user: CashableEntity = new CashableEntity();
+        await user.stripe.createStripeCustomer();
+        let customer = await user.stripe.asStripeCustomer();
+        useCase.createdStripeCustomer = customer;
 
-    // Manage paymenet methods for customer
-    const paymentMethod: any = await user.stripe.addPaymentMethod({
-        type: 'card',
-        card: {
-            number: '4242424242424242',
-            exp_month: 1,
-            exp_year: 2022,
-            cvc: '314',
-        },
-    });
+        // Manage paymenet methods for customer
+        const paymentMethod: any = await user.stripe.addPaymentMethod({
+            type: 'card',
+            card: {
+                number: '4242424242424242',
+                exp_month: 1,
+                exp_year: 2022,
+                cvc: '314',
+            },
+        });
 
-    useCaseRes.has_payment_method = await user.stripe.hasPaymentMethod(paymentMethod.id);
-    useCaseRes.defualt_method_autoset_retrieve = await user.stripe.defaultPaymentMethod();
+        useCase.hasPaymentMethod = await user.stripe.hasPaymentMethod(paymentMethod.id);
+        useCase.defualtMethodAutosetRetrieve = await user.stripe.defaultPaymentMethod();
 
-    const paymentMethod2: any = await user.stripe.addPaymentMethod({
-        type: 'card',
-        card: {
-            number: '4242424242424242',
-            exp_month: 1,
-            exp_year: 2022,
-            cvc: '314',
-        },
-    });
-    await user.stripe.setDefaultPaymentMethod(paymentMethod2.id);
-    useCaseRes.all_payment_methods = await user.stripe.paymentMethods({type: 'card'});
+        const paymentMethod2: any = await user.stripe.addPaymentMethod({
+            type: 'card',
+            card: {
+                number: '4242424242424242',
+                exp_month: 1,
+                exp_year: 2022,
+                cvc: '314',
+            },
+        });
+        await user.stripe.setDefaultPaymentMethod(paymentMethod2.id);
+        useCase.allPaymentMethods = await user.stripe.paymentMethods({ type: 'card' });
 
-    // Create payment intent, pay it and refund it
-    useCaseRes.charged_400 = await user.stripe.charge(400);
-    useCaseRes.refund_400 = await user.stripe.refund(useCaseRes.charged_400.id);
+        // Create payment intent, pay it and refund it
+        useCase.charged400 = await user.stripe.charge(400);
+        useCase.refund400 = await user.stripe.refund(useCase.charged400.id);
 
-    // Invoice user for given item
-    useCaseRes.invoice_for_350 = await user.stripe.invoiceFor('cashjs-invoice-item', 350);
+        // Invoice user for given item
+        useCase.invoiceFor350 = await user.stripe.invoiceFor('cashjs-invoice-item', 350);
 
-    // Fill balance with balance transaction
-    useCaseRes.balance_filled_500 = await user.stripe.fillBallance(500);
+        // Fill balance with balance transaction
+        useCase.balanceFilled500 = await user.stripe.fillBallance(500);
 
-    useCaseRes.removed_customer = await user.stripe.removeStripeCustomer();
+        useCase.removedCustomer = await user.stripe.removeStripeCustomer();
 
-    return useCaseRes;
-  }
+        return useCase;
+    }
 }
 
-export function getEnvObject(): Object{
+export function getEnvObject(): Object {
     const envObject: Object = {};
-    const env: string = readFileSync('.env', {encoding: 'utf-8'});
+    const env: string = readFileSync('.env', { encoding: 'utf-8' });
     env.split('\n').forEach((variable) => {
-        let variableKeyValue = variable.split('='); 
+        let variableKeyValue = variable.split('=');
         envObject[variableKeyValue[0]] = variableKeyValue[1];
     });
 
