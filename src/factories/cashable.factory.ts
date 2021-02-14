@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 
 export class CashableFactory {
-    public generate(stripe: Stripe, cusPropName: string, customerId: string, currency: string) {
+    public generate(stripe: Stripe, cusPropName: string, customerId: string, currency: string, email: string) {
         const cashjs = {
             // Get valid not deleted customer for cashable entity instance
             validCustomer: async (): Promise<Stripe.Customer> => {
@@ -59,7 +59,7 @@ export class CashableFactory {
             },
             // Creates stripe customer and initialize customer ID to cashable entity instance
             createStripeCustomer: async (options: Stripe.CustomerCreateParams) => {
-                const customer: Stripe.Customer = await stripe.customers.create(options);
+                const customer: Stripe.Customer = await stripe.customers.create({email, ...options});
 
                 this[cusPropName] = customer.id;
             },

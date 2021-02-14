@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { PlaygroundController } from './controllers/playground.controller';
+import { UseCaseController } from './controllers/use-case.controller';
 
 @Module({
-  controllers: [PlaygroundController],
+  controllers: [UseCaseController],
 })
 export class AppModule {}

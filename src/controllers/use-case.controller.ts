@@ -18,9 +18,9 @@ class CashableEntity {
     // ...
 }
 
-@Controller()
-export class PlaygroundController {
-    @Get('/test')
+@Controller('/use-case')
+export class UseCaseController {
+    @Get('/')
     async test(): Promise<any> {
         const useCase: any = {};
 
