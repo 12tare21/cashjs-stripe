@@ -39,9 +39,9 @@ If you name differently properties of decorated class like email or stripeId, yo
         
         @Cashable({
             stripe: stripe,
-            email: contactEmail,
+            email: "contactEmail",
             currency: "EUR",
-            stripeId: customerId
+            stripeId: "customerId"
         }) let cashjs;
 
         let customerId;
