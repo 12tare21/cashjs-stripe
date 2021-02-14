@@ -1,11 +1,11 @@
 {
   "name": "cashjs",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
-  "scripts": {
+  "description": "Cashjs eases implemntation of Stripe customer API-s in your node app.",
+  "author": "Tarik Muminovic",
+  "private": false,
+  "license": "Apache-2.0",
+  "scripts": {  
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
