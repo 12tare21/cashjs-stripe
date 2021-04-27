@@ -9,7 +9,7 @@ import { SourceMethodFactory } from '../factory/source.method-factory';
 import Stripe from 'stripe';
 
 export class CashableMethodCollector {
-    public buildMethods(stripe: Stripe, customerIdAlias: string, customerId: string, currency: string, email: string) {
+    public collect(stripe: Stripe, customerIdAlias: string, customerId: string, currency: string, email: string) {
         const balanceTransactionMethodFactory = new BalanceTransactionMethodFactory();
         const cashjsMethodFactory = new CashjsMethodFactory();
         const chargeMethodFactory = new ChargeMethodFactory();

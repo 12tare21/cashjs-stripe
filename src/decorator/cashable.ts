@@ -22,7 +22,7 @@ export function Cashable(stripe: Stripe, options: {
                 if (!this.hasOwnProperty(customerIdAlias)) {
                     throw new Error('Cashable property containing customer ID must be declared and defined.')
                 }
-                return new CashableMethodCollector().buildMethods.call(this, stripe, customerIdAlias, customerId, currency, email);
+                return new CashableMethodCollector().collect.call(this, stripe, customerIdAlias, customerId, currency, email);
                 // return factory.generate.call(this, stripe, customerIdAlias, customerId, currency, email)
             },
             set: function (this: { [name: string]: any }) {
@@ -32,7 +32,7 @@ export function Cashable(stripe: Stripe, options: {
                 if (!this.hasOwnProperty(customerIdAlias)) {
                     throw new Error('Property containing customer ID must be declared and defined.')
                 }
-                return new CashableMethodCollector().buildMethods.call(this, stripe, customerIdAlias, customerId, currency, email);
+                return new CashableMethodCollector().collect.call(this, stripe, customerIdAlias, customerId, currency, email);
                 // return factory.generate.call(this, stripe, customerIdAlias, customerId, currency, email)
             }
         });
