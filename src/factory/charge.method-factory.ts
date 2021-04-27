@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import { validCustomer } from './common.methods';
+import { validCustomer } from './shared/common.methods';
 
 
 export class ChargeMethodFactory {
